@@ -1,0 +1,101 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+</h:head>
+<h:body>
+
+	<p:growl id="messages" />
+	<p:dataTable id="userTable" var="user" value="#{userBean.findAll()}">
+
+		<p:column headerText="Id">
+			<h:outputText value="#{user.id}" />
+		</p:column>
+
+		<p:column headerText="Name">
+			<h:outputText value="#{user.name}" />
+		</p:column>
+
+		<p:column headerText="Email">
+			<h:outputText value="#{user.email}" />
+		</p:column>
+
+		<p:column headerText="operations">
+			<h:form>
+				<p:commandButton value="edit" action="#{userBean.setUser(user)}"
+					update=":userFormEdit" resetValues="true"
+					oncomplete="PF('userDialogEdit').show()" />
+				<p:commandButton value="remove" action="#{userBean.remove(user)}"
+					update=":userTable, :messages">
+					<p:confirm header="Confirmation" message="Are you sure?"
+						icon="ui-icon-alert" />
+				</p:commandButton>
+			</h:form>
+		</p:column>
+
+	</p:dataTable>
+
+	<br />
+	<h:form>
+		<p:commandButton value="add user" action="#{userBean.clear()}"
+			update=":userForm" oncomplete="PF('userDialog').show()"
+			resetValues="true" />
+	</h:form>
+
+	<p:dialog widgetVar="userDialog" closeOnEscape="true" modal="true"
+		header="check">
+		<h1>Save User</h1>
+		<h:form id="userForm">
+			<p:messages />
+			<p:focus />
+			<p:panelGrid columns="2">
+		name:
+		<p:inputText value="#{userBean.user.name}" />
+		
+		email:
+		<p:inputText value="#{userBean.user.email}" />
+			</p:panelGrid>
+			<p:commandButton value="save" action="#{userBean.save()}"
+				update="userForm, :userTable, :messages"
+				oncomplete="handleDialogSubmit(args, 'userDialog')" />
+		</h:form>
+	</p:dialog>
+	
+	<p:dialog widgetVar="userDialogEdit" closeOnEscape="true" modal="true"
+		header="check">
+		<h1>Edit User</h1>
+		<h:form id="userFormEdit">
+			<p:messages />
+			<p:focus />
+			<p:panelGrid columns="2">
+		name:
+		<p:inputText value="#{userBean.user.name}" />
+		
+		email:
+		<p:inputText value="#{userBean.user.email}" />
+			</p:panelGrid>
+			<p:commandButton value="save" action="#{userBean.edit()}"
+				update="userFormEdit, :userTable, :messages"
+				oncomplete="handleDialogSubmit(args, 'userDialogEdit')" />
+		</h:form>
+	</p:dialog>
+
+	<h:form>
+		<p:confirmDialog global="true" closeOnEscape="true">
+			<p:commandButton value="Yes" type="button"
+				styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+			<p:commandButton value="No" type="button"
+				styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+		</p:confirmDialog>
+	</h:form>
+
+ 	<script type="text/javascript">
+ 		function handleDialogSubmit(args, dialogName) {
+ 			if (!args.validationFailed) {
+ 				PF(dialogName).hide();
+ 			}
+ 		}
+ 	</script>
+
+</h:body>
+</html>

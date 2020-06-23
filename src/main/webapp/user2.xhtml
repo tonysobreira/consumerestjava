@@ -1,0 +1,26 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+</h:head>
+<h:body>
+
+	<p:growl id="messages" />
+	<p:dataTable id="userTable" var="user" value="#{userBean.userList2}">
+
+		<p:column headerText="Id">
+			<h:outputText value="#{user.id}" />
+		</p:column>
+
+		<p:column headerText="Name">
+			<h:outputText value="#{user.name}" />
+		</p:column>
+
+		<p:column headerText="Email">
+			<h:outputText value="#{user.email}" />
+		</p:column>
+
+	</p:dataTable>
+
+</h:body>
+</html>
